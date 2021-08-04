@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace NotionCommotion\AttributeValidator;
 
-use NotionCommotion\AttributeValidatorException;
+use NotionCommotion\AttributeValidator\AttributeValidatorException;
 use JsonSerializable;
 use ReflectionClass;
 use RegexIterator;
