@@ -1,22 +1,10 @@
 # attribute-validator
 
-Used to find PHP 8 attributes without defined classes.
+Used to find PHP 8 attributes without defined classes.  While annotations will result in error if the class does not exist, not true for attributes.
 
 ## Installation
 
-Add notion-commotion/attribute-validator as a requirement to composer.json:
-
-```json
-{
-    "require": {
-       "notion-commotion/attribute-validator"
-    }
-}
-```
-
-```
-composer update
-```
+composer require notion-commotion/attribute-validator
 
 ## Usage
 
