@@ -153,7 +153,6 @@ class AttributeValidator implements JsonSerializable
 
     public static function debugFile(string $filename):array
     {
-        $filename = self::getPath($filename);
         if(!is_file($filename) || pathinfo($filename, PATHINFO_EXTENSION)!=='php') {
             throw new AttributeValidatorException($filename.' is not a valid php file');
         }
@@ -166,14 +165,6 @@ class AttributeValidator implements JsonSerializable
         return $test;
     }
 
-    private static function getPath(string $path):string
-    {
-        if(substr($path, 0, 1)!=='/'){
-            $path = __DIR__.'/'.$path;
-        }
-        return $path;
-    }
-
     private function addOtherItems(array $rs, string $type):self
     {
         if($rs[$type]) {
@@ -184,7 +175,6 @@ class AttributeValidator implements JsonSerializable
 
     private function getIterator(string $path)
     {
-        $path = self::getPath($path);
         if (!file_exists($path)) {
             throw new AttributeValidatorException($path.' is not valid');
         }
