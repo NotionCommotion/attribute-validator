@@ -10,7 +10,9 @@
         }
     ],
     "autoload": {
-        "psr-4": {"notion-commotion\\AttributeValidator\\": "src/"}
+        "psr-4": {
+            "AttributeValidator\\": "src"
+        }
     },
     "minimum-stability": "stable",
     "require": {}
