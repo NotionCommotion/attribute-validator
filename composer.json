@@ -1,0 +1,17 @@
+{
+    "name": "notion-commotion/attribute-validator",
+    "description": "Finds attributes which do not have classes assigned.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Reed",
+            "email": "villascape@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"notion-commotion\\AttributeValidator\\": "src/"}
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
