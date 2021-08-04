@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "AttributeValidator\\": "src"
+            "NotionCommotion\\AttributeValidator\\": "src/"
         }
     },
     "minimum-stability": "stable",
