@@ -40,36 +40,27 @@ class AttributeValidator implements JsonSerializable
                 }
                 $this->addOtherItems($rs, 'trait')->addOtherItems($rs, 'interface')->addOtherItems($rs, 'abstract');
 
-                foreach(array_merge($rs['class'], $rs['trait'], $rs['abstract']) as $class) {
+                foreach(array_merge($rs['class'], $rs['abstract']) as $class) {
                     $fqcn = ($rs['namespace']?$rs['namespace'].'\\':'').$class;
                     if(!class_exists($fqcn)) {
                         $this->notFoundClasses[$fqcn] = $rs;
                         continue;
                     }
-                    $arr = [];
-                    $reflectionClass = new ReflectionClass($fqcn);
-
-                    if($rs = $this->getClasslessAttributes($reflectionClass->getAttributes())) {
-                        $arr['classAttributes'] = $rs;
+                    $arr = $this->checkItem($fqcn);
+                    if($arr) {
+                        $this->classesWithUndeclaredAttributes[$fqcn] = array_merge(['fqcn'=>$fqcn, 'filename'=>$filename], $arr);
                     }
-                    if($rs = $this->processAttributeCollection($reflectionClass->getProperties())) {
-                        $arr['propertyAttributes'] = $rs;
+                    else {
+                        $this->classesWithoutUndeclaredAttributes[$fqcn] = $filename;
                     }
-                    $methods = $reflectionClass->getMethods();
-                    if($rs = $this->processAttributeCollection($methods)) {
-                        $arr['methodAttributes'] = $rs;
+                }
+                foreach($rs['trait'] as $trait) {
+                    $fqcn = ($rs['namespace']?$rs['namespace'].'\\':'').$trait;
+                    if(!trait_exists($fqcn)) {
+                        $this->notFoundClasses[$fqcn] = $rs;
+                        continue;
                     }
-                    foreach($methods as $method) {
-                        $methodName = $method->getName();
-                        if($rs = $this->processAttributeCollection($method->getParameters())) {
-                            $arr['parameterAttributes'][$methodName] = $rs;
-                        }
-                    }
-                    if($rs = $this->processAttributeCollection($reflectionClass->getReflectionConstants())) {
-                        $arr['classConstantAttributes'] = $rs;
-                    }
-                    // Future.  Include attributes on constants and functions?
-
+                    $arr = $this->checkItem($fqcn);
                     if($arr) {
                         $this->classesWithUndeclaredAttributes[$fqcn] = array_merge(['fqcn'=>$fqcn, 'filename'=>$filename], $arr);
                     }
@@ -79,6 +70,34 @@ class AttributeValidator implements JsonSerializable
                 }
             }
         }
+    }
+
+    public function checkItem(string $fqcn):array
+    {
+        $arr = [];
+        $reflectionClass = new ReflectionClass($fqcn);
+
+        if($rs = $this->getClasslessAttributes($reflectionClass->getAttributes())) {
+            $arr['classAttributes'] = $rs;
+        }
+        if($rs = $this->processAttributeCollection($reflectionClass->getProperties())) {
+            $arr['propertyAttributes'] = $rs;
+        }
+        $methods = $reflectionClass->getMethods();
+        if($rs = $this->processAttributeCollection($methods)) {
+            $arr['methodAttributes'] = $rs;
+        }
+        foreach($methods as $method) {
+            $methodName = $method->getName();
+            if($rs = $this->processAttributeCollection($method->getParameters())) {
+                $arr['parameterAttributes'][$methodName] = $rs;
+            }
+        }
+        if($rs = $this->processAttributeCollection($reflectionClass->getReflectionConstants())) {
+            $arr['classConstantAttributes'] = $rs;
+        }
+        // Future.  Include attributes on constants and functions?
+        return $arr;
     }
 
     public function validate():array
