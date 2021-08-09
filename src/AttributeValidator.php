@@ -71,7 +71,7 @@ class AttributeValidator implements JsonSerializable
                     // Future.  Include attributes on constants and functions?
 
                     if($arr) {
-                        $this->classesWithUndeclaredAttributes[$fqcn] = array_merge(['fqcn'=>$fqcn, 'fileName'=>$filename], $arr);
+                        $this->classesWithUndeclaredAttributes[$fqcn] = array_merge(['fqcn'=>$fqcn, 'filename'=>$filename], $arr);
                     }
                     else {
                         $this->classesWithoutUndeclaredAttributes[$fqcn] = $filename;
