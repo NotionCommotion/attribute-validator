@@ -40,7 +40,7 @@ class AttributeValidator implements JsonSerializable
                 }
                 $this->addOtherItems($rs, 'trait')->addOtherItems($rs, 'interface')->addOtherItems($rs, 'abstract');
 
-                foreach($rs['class'] as $class) {
+                foreach(array_merge($rs['class'], $rs['trait'], $rs['abstract']) as $class) {
                     $fqcn = ($rs['namespace']?$rs['namespace'].'\\':'').$class;
                     if(!class_exists($fqcn)) {
                         $this->notFoundClasses[$fqcn] = $rs;
