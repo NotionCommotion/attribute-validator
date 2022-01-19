@@ -149,7 +149,7 @@ class AttributeValidator implements JsonSerializable
         return $arr;
     }
 
-    public function jsonSerialize() {
+    public function jsonSerialize():mixed {
         return [
             'classesWithUndeclaredAttributes'=>array_values($this->classesWithUndeclaredAttributes),
             'classesWithoutUndeclaredAttributes'=>$this->classesWithoutUndeclaredAttributes,
